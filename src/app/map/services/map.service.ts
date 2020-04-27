@@ -34,7 +34,7 @@ export class MapService {
       script.defer = true;
       script.id = "google-map-script";
       script.src =
-        "https://maps.googleapis.com/maps/api/js?key=AIzaSyCZPALwZxbTv00VFV_PgLD56r6MBrGAUQw&libraries=places&callback=googleMapLoaded";
+        "https://maps.googleapis.com/maps/api/js?key=<KEY HERE>&libraries=places&callback=googleMapLoaded";
 
       (this._windowRef.getNativeWindow() as any)["googleMapLoaded"] = () => {
         console.log("google maps api finished loading")
