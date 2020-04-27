@@ -1,0 +1,11 @@
+<div>
+	<app-map [mapOptions]="mapOptions" (mapReady)="loadData($event)">
+		<app-map-marker #marker *ngFor="let markerOptions of markerOptionsCollection" [markerOptions]="markerOptions"
+			(markerClick)="markerClicked(marker)">
+			<app-map-info-window [options]="infoWindowOptions"></app-map-info-window>
+		</app-map-marker>
+	</app-map>
+</div>
+<div>
+	<button (click)="addMarker()">Add marker</button> <button (click)="loadData(true)">Update markers</button>
+</div>
