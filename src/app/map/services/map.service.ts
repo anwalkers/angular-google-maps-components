@@ -4,9 +4,23 @@ import { BehaviorSubject, Observable, of, fromEvent } from "rxjs";
 
 @Injectable()
 export class MapService {
+  public set key(key: string) {
+    this._key = key;
+  }
+
+  public get key(): string {
+    if (this._key) {
+      return `&key=${this._key}`;
+    } else {
+      return "";
+    }
+  }
+
   public googleMapsLoaded: BehaviorSubject<boolean> = new BehaviorSubject<
     boolean
   >(false);
+
+  private _key: string;
 
   constructor(
     private _zone: NgZone,
@@ -32,8 +46,7 @@ export class MapService {
     script.async = true;
     script.defer = true;
     script.id = "google-map-script";
-    script.src =
-      "https://maps.googleapis.com/maps/api/js?libraries=places&callback=googleMapLoaded";
+    script.src = `https://maps.googleapis.com/maps/api/js?libraries=places${this.key}&callback=googleMapLoaded`;
 
     (this._windowRef.getNativeWindow() as any)["googleMapLoaded"] = () => {
       console.log("google maps api finished loading");
