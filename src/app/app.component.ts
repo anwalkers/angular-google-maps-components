@@ -78,7 +78,6 @@ export class AppComponent implements OnInit {
   }
 
   public markerClicked(markerComponent: MapMarkerComponent) {
-    
     this.infoWindowOptions = {
       content: `<div>this is content! ${markerComponent.getTitle()}</div>`
     }

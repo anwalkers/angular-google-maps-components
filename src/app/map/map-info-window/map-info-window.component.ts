@@ -4,9 +4,10 @@ import {
   Input,
   Inject,
   NgZone,
-  ElementRef
+  ElementRef,
+  OnDestroy
 } from "@angular/core";
-import { Observable, BehaviorSubject, combineLatest } from "rxjs";
+import { Observable, BehaviorSubject, Subject, combineLatest } from "rxjs";
 import { map, take, takeUntil } from "rxjs/operators";
 import { MapService } from "../services/map.service";
 import { MapMarkerComponent } from "../map-marker/map-marker.component";
@@ -17,7 +18,7 @@ import { MapComponent } from "../map-component/map.component";
   selector: "app-map-info-window",
   host: { style: "display: none" }
 })
-export class MapInfoWindowComponent implements OnInit {
+export class MapInfoWindowComponent implements OnInit, OnDestroy {
   @Input()
   set options(options: google.maps.InfoWindowOptions) {
     this._options.next(options || {});
@@ -31,6 +32,7 @@ export class MapInfoWindowComponent implements OnInit {
   private _eventManagerService: MapEventManagerService = new MapEventManagerService(
     this._ngZone
   );
+  private readonly _destroy = new Subject<void>();
 
   private readonly _options = new BehaviorSubject<
     google.maps.InfoWindowOptions
@@ -66,6 +68,18 @@ export class MapInfoWindowComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    this._eventManagerService.destroy();
+    this._destroy.next();
+    this._destroy.complete();
+
+    // If no info window has been created on the server, we do not try closing it.
+    // On the server, an info window cannot be created and this would cause errors.
+    if (this.infoWindow) {
+      this.close();
+    }
+  }
+
   public open(anchor?: MapMarkerComponent) {
     const marker = anchor ? anchor.marker : undefined;
     this._elementRef.nativeElement.style.display = "";
@@ -74,6 +88,10 @@ export class MapInfoWindowComponent implements OnInit {
     } else {
       console.log("info window undefined");
     }
+  }
+
+  public close() {
+    this.infoWindow!.close();
   }
 
   private _combineOptions(): Observable<google.maps.InfoWindowOptions> {
@@ -90,12 +108,8 @@ export class MapInfoWindowComponent implements OnInit {
   }
 
   private _watchForOptionsChanges() {
-    this._options.subscribe(options => {
-      console.log(`options content: ${options.content}`);
-
+    this._options.pipe(takeUntil(this._destroy)).subscribe(options => {
       this.infoWindow.setOptions(options);
     });
   }
-
-  private _destroy() {}
 }
