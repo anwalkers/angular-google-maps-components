@@ -77,7 +77,7 @@ export class MapComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._mapService.googleMapsLoaded.subscribe(loaded => {
+    this._mapService.loadGoogleMap().subscribe(loaded => {
       console.log(`map component: google maps api loaded: ${loaded}`);
       if (loaded) {
         this._mapOptions.subscribe(mapOptions => {

@@ -47,7 +47,7 @@ export class MapInfoWindowComponent implements OnInit {
   ) {}
 
   public ngOnInit() {
-    this._mapService.googleMapsLoaded.subscribe(loaded => {
+    this._mapService.loadGoogleMap().subscribe(loaded => {
       if (loaded) {
         console.log(`map info window created`);
         const combineOptions$ = this._combineOptions();

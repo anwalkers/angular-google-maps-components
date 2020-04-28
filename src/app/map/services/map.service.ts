@@ -4,26 +4,25 @@ import { BehaviorSubject, Observable, of, fromEvent } from "rxjs";
 
 @Injectable()
 export class MapService {
-  public googleMapsLoaded: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(
     private _zone: NgZone,
     private _windowRef: WindowRef,
     private _documentRef: DocumentRef
   ) {
-    this.loadGoogleMap().subscribe(() => {
-      this.googleMapsLoaded.next(true);
-    })
+    // this.loadGoogleMap().subscribe(() => {
+    //   this.googleMapsLoaded.next(true);
+    // })
   }
 
-  private loadGoogleMap(): Observable<string> {
-    return new Observable<string>(subscriber => {
+  public loadGoogleMap(): Observable<boolean> {
+    return new Observable<boolean>(subscriber => {
       if (
         this._windowRef.getNativeWindow().google &&
         this._windowRef.getNativeWindow().google.maps
       ) {
         console.log("google maps api already loaded")
-        return subscriber.next("google maps api already loaded");
+        return subscriber.next(true);
       }
 
       const script = this._documentRef
@@ -38,7 +37,7 @@ export class MapService {
 
       (this._windowRef.getNativeWindow() as any)["googleMapLoaded"] = () => {
         console.log("google maps api finished loading")
-        return subscriber.next("google maps api loaded");
+        return subscriber.next(true);
       };
 
       this._documentRef.getNativeDocument().body.appendChild(script);
