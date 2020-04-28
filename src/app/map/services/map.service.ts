@@ -1,36 +1,43 @@
 import { Injectable, NgZone } from "@angular/core";
 import { WindowRef, DocumentRef } from "../../utilities/browser-global";
 import { BehaviorSubject, Observable, of, fromEvent } from "rxjs";
+import { GoogleMapsConfig } from '../maps';
+
 
 @Injectable()
 export class MapService {
-  public set key(key: string) {
-    this._key = key;
+  private set mapConfig(mapConfig: GoogleMapsConfig) {
+    this._mapConfig = mapConfig ? mapConfig : {};
+  }
+  
+  private get key(): string {
+    return this._mapConfig.key ? `&key=${this._mapConfig.key}` : '' ;
   }
 
-  public get key(): string {
-    if (this._key) {
-      return `&key=${this._key}`;
-    } else {
-      return "";
-    }
+  private get clientId(): string {
+    return this._mapConfig.clientId ? `&clientId=${this._mapConfig.clientId}` : '' ;
+  }
+
+  private get libraries(): string {
+    return this._mapConfig.libraries ? `&libraries=${this._mapConfig.libraries}` : '';
   }
 
   public googleMapsLoaded: BehaviorSubject<boolean> = new BehaviorSubject<
     boolean
   >(false);
 
-  private _key: string;
+  private _mapConfig: GoogleMapsConfig;
 
   constructor(
     private _zone: NgZone,
     private _windowRef: WindowRef,
     private _documentRef: DocumentRef
   ) {
-    this.loadGoogleMap();
   }
 
-  public loadGoogleMap() {
+  public loadGoogleMap(mapConfig?: GoogleMapsConfig) {
+    this.mapConfig = mapConfig;
+
     if (
       this._windowRef.getNativeWindow().google &&
       this._windowRef.getNativeWindow().google.maps
@@ -46,7 +53,7 @@ export class MapService {
     script.async = true;
     script.defer = true;
     script.id = "google-map-script";
-    script.src = `https://maps.googleapis.com/maps/api/js?libraries=places${this.key}&callback=googleMapLoaded`;
+    script.src = `https://maps.googleapis.com/maps/api/js?callback=googleMapLoaded${this.clientId}${this.key}${this.libraries}`;
 
     (this._windowRef.getNativeWindow() as any)["googleMapLoaded"] = () => {
       console.log("google maps api finished loading");
