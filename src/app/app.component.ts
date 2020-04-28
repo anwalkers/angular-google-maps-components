@@ -5,7 +5,8 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   ViewChild,
-  Inject
+  Inject,
+OnDestroy
 } from "@angular/core";
 import { MapInfoWindowComponent } from './map/map-info-window/map-info-window.component'
 import { BehaviorSubject } from "rxjs";
@@ -19,7 +20,7 @@ import { GoogleMapsConfig } from './map/maps';
   styleUrls: ["./app.component.css"],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   @ViewChild(MapInfoWindowComponent, {static: false}) public infoWindow: MapInfoWindowComponent;
 
   public markerOptionsCollection: google.maps.MarkerOptions[] = [];
@@ -29,7 +30,7 @@ export class AppComponent implements OnInit {
 
   private mapConfig: GoogleMapsConfig = {
     clientId: '',
-    key: '',
+    key: 'AIzaSyC0BD8lVJToafBicN_69FxXxau8Hw6_GZs',
     libraries: 'places'
   }
 
@@ -43,6 +44,9 @@ export class AppComponent implements OnInit {
       center: { lat: 47.674293, lng: -117.095853 },
       zoom: 14
     };
+  }
+
+  ngOnDestroy() {
   }
 
   public loadData(event) {
