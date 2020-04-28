@@ -30,7 +30,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private mapConfig: GoogleMapsConfig = {
     clientId: '',
-    key: 'AIzaSyC0BD8lVJToafBicN_69FxXxau8Hw6_GZs',
+    key: '',
     libraries: 'places'
   }
 
