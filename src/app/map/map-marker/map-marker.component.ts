@@ -114,8 +114,6 @@ export class MapMarkerComponent implements OnInit {
     return this.marker!.getTitle() || null;
   }
 
-  pu;
-
   private combineOptions(): Observable<google.maps.MarkerOptions> {
     return combineLatest([
       this._options,
