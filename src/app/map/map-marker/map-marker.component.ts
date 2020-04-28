@@ -10,7 +10,7 @@ import {
   ChangeDetectionStrategy,
   ViewEncapsulation
 } from "@angular/core";
-import { MapComponent } from '../map-component/map.component';
+import { MapComponent } from "../map-component/map.component";
 import { Observable, of, combineLatest, BehaviorSubject } from "rxjs";
 import { map, take, takeUntil } from "rxjs/operators";
 import { MapEventManagerService } from "../services/map-event-manager.service";
@@ -92,7 +92,9 @@ export class MapMarkerComponent implements OnInit {
     private readonly _mapComponent: MapComponent,
     private _ngZone: NgZone
   ) {
-    console.log(`map marker: map is defined ${this._mapComponent.map !== null}`);
+    console.log(
+      `map marker: map is defined ${this._mapComponent.map !== null}`
+    );
   }
 
   public ngOnInit() {
@@ -112,7 +114,7 @@ export class MapMarkerComponent implements OnInit {
     return this.marker!.getTitle() || null;
   }
 
-  pu
+  pu;
 
   private combineOptions(): Observable<google.maps.MarkerOptions> {
     return combineLatest([
