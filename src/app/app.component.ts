@@ -4,11 +4,14 @@ import {
   AfterContentChecked,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  ViewChild
+  ViewChild,
+  Inject
 } from "@angular/core";
 import { MapInfoWindowComponent } from './map/map-info-window/map-info-window.component'
 import { BehaviorSubject } from "rxjs";
 import { MapMarkerComponent } from './map/map-marker/map-marker.component';
+import { MapService } from "./map/services/map.service";
+import { GoogleMapsConfig } from './map/maps';
 
 @Component({
   selector: "my-app",
@@ -24,7 +27,16 @@ export class AppComponent implements OnInit {
   public mapOptions: google.maps.MapOptions;
   public infoWindowOptions: google.maps.InfoWindowOptions;
 
-  constructor(private changeDetectorRef: ChangeDetectorRef) {}
+  private mapConfig: GoogleMapsConfig = {
+    clientId: '',
+    key: '',
+    libraries: 'places'
+  }
+
+  constructor(@Inject('MapService') private _mapService: MapService,
+  private changeDetectorRef: ChangeDetectorRef ) {
+    this._mapService.loadGoogleMap(this.mapConfig);
+  }
 
   ngOnInit() {
     this.mapOptions = {
