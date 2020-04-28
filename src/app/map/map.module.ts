@@ -17,7 +17,8 @@ import { MapEventManagerService } from "./services/map-event-manager.service";
 })
 export class MapModule {
   constructor(@Inject('MapService') private mapService: MapService) {
-    this.mapService.loadGoogleMap().subscribe(loaded => {
+    this.mapService.loadGoogleMap();
+    this.mapService.googleMapsLoaded.subscribe(loaded => {
       if (loaded) {
         console.log(`map module: google maps api loaded ${loaded}`);
       }

@@ -72,12 +72,12 @@ export class MapComponent implements OnInit {
     private _ngZone: NgZone
   ) {
     console.log(
-      `map component: map is defined ${this._mapService.map !== undefined}`
+      `map component: map is defined ${this.map !== undefined}`
     );
   }
 
   ngOnInit() {
-    this._mapService.loadGoogleMap().subscribe(loaded => {
+    this._mapService.googleMapsLoaded.subscribe(loaded => {
       console.log(`map component: google maps api loaded: ${loaded}`);
       if (loaded) {
         this._mapOptions.subscribe(mapOptions => {

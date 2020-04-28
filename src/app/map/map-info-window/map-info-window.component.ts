@@ -11,6 +11,7 @@ import { map, take, takeUntil } from "rxjs/operators";
 import { MapService } from "../services/map.service";
 import { MapMarkerComponent } from "../map-marker/map-marker.component";
 import { MapEventManagerService } from "../services/map-event-manager.service";
+import { MapComponent } from "../map-component/map.component";
 
 @Directive({
   selector: "app-map-info-window",
@@ -43,11 +44,12 @@ export class MapInfoWindowComponent implements OnInit {
   constructor(
     private _ngZone: NgZone,
     private _elementRef: ElementRef,
-    @Inject("MapService") private _mapService: MapService
+    @Inject("MapService") private _mapService: MapService,
+    private _mapComponent: MapComponent
   ) {}
 
   public ngOnInit() {
-    this._mapService.loadGoogleMap().subscribe(loaded => {
+    this._mapService.googleMapsLoaded.subscribe(loaded => {
       if (loaded) {
         console.log(`map info window created`);
         const combineOptions$ = this._combineOptions();
@@ -68,7 +70,7 @@ export class MapInfoWindowComponent implements OnInit {
     const marker = anchor ? anchor.marker : undefined;
     this._elementRef.nativeElement.style.display = "";
     if (this.infoWindow) {
-      this.infoWindow!.open(this._mapService.map, marker);
+      this.infoWindow!.open(this._mapComponent.map, marker);
     } else {
       console.log("info window undefined");
     }
