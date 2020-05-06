@@ -21,8 +21,8 @@ export const DEFAULT_WIDTH: string | number = "500px";
 
 @Component({
   selector: "app-map",
-  templateUrl: "./map.component.html",
-  styleUrls: ["./map.component.css"]
+  templateUrl: "./google-map.component.html",
+  styleUrls: ["./google-map.component.css"]
 })
 export class MapComponent implements OnInit {
   @Input() height: string | number = DEFAULT_HEIGHT;

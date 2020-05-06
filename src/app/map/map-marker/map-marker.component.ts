@@ -10,7 +10,7 @@ import {
   ChangeDetectionStrategy,
   ViewEncapsulation
 } from "@angular/core";
-import { MapComponent } from "../map-component/map.component";
+import { MapComponent } from "../google-map/google-map.component";
 import { Observable, of, combineLatest, BehaviorSubject } from "rxjs";
 import { map, take, takeUntil } from "rxjs/operators";
 import { MapEventManagerService } from "../services/map-event-manager.service";

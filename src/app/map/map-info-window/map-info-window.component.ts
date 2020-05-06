@@ -12,7 +12,7 @@ import { map, take, takeUntil } from "rxjs/operators";
 import { MapService } from "../services/map.service";
 import { MapMarkerComponent } from "../map-marker/map-marker.component";
 import { MapEventManagerService } from "../services/map-event-manager.service";
-import { MapComponent } from "../map-component/map.component";
+import { MapComponent } from "../google-map/google-map.component";
 
 @Directive({
   selector: "app-map-info-window",
