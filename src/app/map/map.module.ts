@@ -5,13 +5,15 @@ import { MapService } from "./services/map.service";
 import { MapMarkerComponent } from "./map-marker/map-marker.component";
 import { MapInfoWindowComponent } from './map-info-window/map-info-window.component';
 import { MapEventManagerService } from "./services/map-event-manager.service";
+import { EsriMapService } from './services/esri-map.service';
+import { EsriMapComponent } from './esri-map/esri-map.component';
 
 @NgModule({
   imports: [CommonModule],
   exports: [MapComponent, MapMarkerComponent, MapInfoWindowComponent],
-  declarations: [MapComponent, MapMarkerComponent, MapInfoWindowComponent],
+  declarations: [MapComponent, MapMarkerComponent, MapInfoWindowComponent, EsriMapComponent],
   providers: [
-    { provide: "MapService", useClass: MapService },
+    { provide: "MapService", useClass: MapService, providers: [EsriMapService] },
   ],
   entryComponents: [MapComponent]
 })
