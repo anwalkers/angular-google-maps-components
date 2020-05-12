@@ -7,7 +7,9 @@
 	</app-map>
 </div>
 <div style="margin: 8px 0">
-  <app-esri-map></app-esri-map>
+  <app-esri-map>
+    <app-esri-feature-layer></app-esri-feature-layer>
+  </app-esri-map>
 </div>
 <div>
 	<button (click)="addMarker()">Add marker</button> <button (click)="loadData(true)">Update markers</button>

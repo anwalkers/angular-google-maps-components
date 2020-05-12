@@ -7,12 +7,14 @@ import { MapInfoWindowComponent } from "./map-info-window/map-info-window.compon
 import { MapEventManagerService } from "./services/map-event-manager.service";
 import { EsriMapService } from "./services/esri-map.service";
 import { EsriMapComponent } from "./esri-map/esri-map.component";
+import { EsriFeatureLayerComponent } from "./esri-feature-layer/esri-feature-layer.component";
 
 const components = [
   MapComponent,
   MapMarkerComponent,
   MapInfoWindowComponent,
-  EsriMapComponent
+  EsriMapComponent,
+  EsriFeatureLayerComponent
 ];
 
 @NgModule({
