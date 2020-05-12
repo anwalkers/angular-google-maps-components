@@ -2,7 +2,7 @@
 
 import { loadModules } from "esri-loader";
 
-import { Component, OnInit, Input, Output } from "@angular/core";
+import { Component, OnInit, Input, Output, NgZone } from "@angular/core";
 
 import { BehaviorSubject } from "rxjs";
 
@@ -10,10 +10,10 @@ export const DEFAULT_MAP_PROPERTIES: __esri.MapProperties = {
   basemap: "topo"
 };
 export const DEFAULT_MAPVIEW_PROPERTIES: __esri.MapViewProperties = {
-  center: [47.674293, -117.095853],
-  zoom: 17
+  center: [-117.095853, 47.674293],
+  zoom: 14
 };
-export const DEFAULT_HEIGHT: string | number = "500px";
+export const DEFAULT_HEIGHT: string | number = "400px";
 export const DEFAULT_WIDTH: string | number = "500px";
 
 @Component({
@@ -73,21 +73,30 @@ export class EsriMapComponent implements OnInit {
   public map?: __esri.Map;
   public view?: __esri.View | __esri.MapView | __esri.SceneView;
 
-  constructor() {}
+  constructor(private _ngZone: NgZone) {}
 
   ngOnInit() {
-    console.log(`ESRI map properties: ${JSON.stringify(this._mapViewProperties.value)}`);
-    loadModules(["esri/Map", `esri/views/${this._viewType}`, "domReady!"]).then(
-      (response) => {
-        console.log(`ESRI: repsonse ${response}`)
+    this._ngZone.runOutsideAngular(() => {
+      console.log(
+        `ESRI map properties: ${JSON.stringify(this._mapViewProperties.value)}`
+      );
+      loadModules([
+        "esri/Map",
+        `esri/views/${this._viewType.value}`
+      ]).then(response => {
         let mapCtor: __esri.MapConstructor = response[0];
         let mapView: __esri.ViewConstructor = response[1];
 
         // create map
         const map = new mapCtor(this._mapProperties.value);
 
-        console.log('ESRI: HTMLDivElement: ' + document.getElementById('esri-map'))
-        const viewProps = { container: document.getElementById('esri-map') as HTMLDivElement, map: map };
+        console.log(
+          "ESRI: HTMLDivElement: " + document.getElementById("esri-map")
+        );
+        const viewProps: __esri.MapViewProperties = {
+          container: "esri-map",
+          map: map
+        };
         // prepare properties that should be set locally
         // create a new object so as to not modify the provided object
         const newViewProps: __esri.ViewProperties = {
@@ -100,7 +109,7 @@ export class EsriMapComponent implements OnInit {
 
         this.map = map;
         this.view = view;
-      }
-    );
+      });
+    });
   }
 }
