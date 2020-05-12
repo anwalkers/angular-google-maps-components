@@ -13,8 +13,8 @@ export const DEFAULT_MAPVIEW_PROPERTIES: __esri.MapViewProperties = {
   center: [-117.095853, 47.674293],
   zoom: 14
 };
-export const DEFAULT_HEIGHT: string | number = "400px";
-export const DEFAULT_WIDTH: string | number = "500px";
+export const DEFAULT_HEIGHT: string | number = "300px";
+export const DEFAULT_WIDTH: string | number = "100%";
 
 @Component({
   selector: "app-esri-map",

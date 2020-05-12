@@ -16,8 +16,8 @@ export const DEFAULT_OPTIONS: google.maps.MapOptions = {
   zoom: 17
 };
 
-export const DEFAULT_HEIGHT: string | number = "500px";
-export const DEFAULT_WIDTH: string | number = "500px";
+export const DEFAULT_HEIGHT: string | number = "300px";
+export const DEFAULT_WIDTH: string | number = "100%";
 
 @Component({
   selector: "app-map",
