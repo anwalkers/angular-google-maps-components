@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, NgZone } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
+import { EsriMapComponent } from "../esri-map/esri-map.component";
 
 @Component({
   selector: "app-esri-feature-layer",
@@ -8,15 +9,30 @@ import { BehaviorSubject } from "rxjs";
 })
 export class EsriFeatureLayerComponent implements OnInit {
   @Input()
-  public set points(points: __esri.Point[]) {
-    this._points.next(points);
+  public set graphics(graphics: __esri.Graphic[]) {
+    this._graphics.next(graphics);
   }
 
-  private _points: BehaviorSubject<
-    __esri.Point[] | undefined
-  > = new BehaviorSubject<__esri.Point | undefined>(undefined);
+  private _graphics: BehaviorSubject<
+    __esri.Graphic[] | undefined
+  > = new BehaviorSubject<__esri.Graphic[] | undefined>(undefined);
 
-  constructor() {}
+  constructor(
+    private _esriMapComponent: EsriMapComponent,
+    private _ngZone: NgZone
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    // this._graphics.subscribe(graphics => {
+    //   if (graphics !== undefined) {
+    //     this._ngZone.runOutsideAngular(() => {
+    //       graphics.map((graphic) => {
+    //         let res = this._esriMapComponent.view !== undefined ?
+    //         this._esriMapComponent.view.graphics.add(graphic) : true;
+    //     console.log(`ESRI response: ${JSON.stringify(res)}`);
+    //       });
+    //     });
+    //   }
+    // });
+  }
 }

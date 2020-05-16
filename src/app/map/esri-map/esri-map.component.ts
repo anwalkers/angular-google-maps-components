@@ -77,9 +77,6 @@ export class EsriMapComponent implements OnInit {
 
   ngOnInit() {
     this._ngZone.runOutsideAngular(() => {
-      console.log(
-        `ESRI map properties: ${JSON.stringify(this._mapViewProperties.value)}`
-      );
       loadModules([
         "esri/Map",
         `esri/views/${this._viewType.value}`

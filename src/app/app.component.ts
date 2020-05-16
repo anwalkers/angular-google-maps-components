@@ -6,13 +6,15 @@ import {
   ChangeDetectorRef,
   ViewChild,
   Inject,
-OnDestroy
+  OnDestroy,
+  NgZone
 } from "@angular/core";
-import { MapInfoWindowComponent } from './map/map-info-window/map-info-window.component'
+import { MapInfoWindowComponent } from "./map/map-info-window/map-info-window.component";
 import { BehaviorSubject } from "rxjs";
-import { MapMarkerComponent } from './map/map-marker/map-marker.component';
+import { MapMarkerComponent } from "./map/map-marker/map-marker.component";
 import { MapService } from "./map/services/map.service";
-import { GoogleMapsConfig } from './map/maps';
+import { GoogleMapsConfig } from "./map/maps";
+import { loadModules } from "esri-loader";
 
 @Component({
   selector: "my-app",
@@ -21,7 +23,8 @@ import { GoogleMapsConfig } from './map/maps';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit, OnDestroy {
-  @ViewChild(MapInfoWindowComponent, {static: false}) public infoWindow: MapInfoWindowComponent;
+  @ViewChild(MapInfoWindowComponent, { static: false })
+  public infoWindow: MapInfoWindowComponent;
 
   public markerOptionsCollection: google.maps.MarkerOptions[] = [];
 
@@ -29,13 +32,18 @@ export class AppComponent implements OnInit, OnDestroy {
   public infoWindowOptions: google.maps.InfoWindowOptions;
 
   private mapConfig: GoogleMapsConfig = {
-    clientId: '',
-    key: '',
-    libraries: 'places'
-  }
+    clientId: "",
+    key: "",
+    libraries: "places"
+  };
 
-  constructor(@Inject('MapService') private _mapService: MapService,
-  private changeDetectorRef: ChangeDetectorRef ) {
+  public graphics: __esri.Graphic[];
+
+  constructor(
+    @Inject("MapService") private _mapService: MapService,
+    private changeDetectorRef: ChangeDetectorRef,
+    private _ngZone: NgZone
+  ) {
     this._mapService.loadGoogleMap(this.mapConfig);
   }
 
@@ -46,8 +54,7 @@ export class AppComponent implements OnInit, OnDestroy {
     };
   }
 
-  ngOnDestroy() {
-  }
+  ngOnDestroy() {}
 
   public loadData(event) {
     console.log(
@@ -65,7 +72,7 @@ export class AppComponent implements OnInit, OnDestroy {
         },
         title: "A pin",
         clickable: true,
-        label: 'A'
+        label: "A"
       },
       {
         position: {
@@ -74,9 +81,37 @@ export class AppComponent implements OnInit, OnDestroy {
         },
         title: "B pin",
         clickable: true,
-        label: 'B'
+        label: "B"
       }
     ];
+
+    this._ngZone.runOutsideAngular(() => {
+      loadModules(["esri/Graphic"]).then(([graphic]) => {
+        const simpleMarker = {
+          type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
+          color: [226, 119, 40]
+        };
+
+        this.graphics = [
+          new graphic({
+            geometry: {
+              type: "point", // autocasts as new Point()
+              longitude: -117.095853,
+              latitude: 47.674293
+            },
+            symbol: simpleMarker
+          }),
+          new graphic({
+            geometry: {
+              type: "point", // autocasts as new Point()
+              longitude: -117.098,
+              latitude: 47.665
+            },
+            symbol: simpleMarker
+          })
+        ];
+      });
+    });
 
     this.changeDetectorRef.detectChanges();
   }
@@ -96,7 +131,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public markerClicked(markerComponent: MapMarkerComponent) {
     this.infoWindowOptions = {
       content: `<div>this is content! ${markerComponent.getTitle()}</div>`
-    }
+    };
     this.infoWindow.open(markerComponent);
   }
 }
