@@ -1,19 +1,22 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input } from "@angular/core";
+import { BehaviorSubject } from "rxjs";
 
 @Component({
-  selector: 'app-esri-feature-layer',
-  templateUrl: './esri-feature-layer.component.html',
-  styleUrls: ['./esri-feature-layer.component.css']
+  selector: "app-esri-feature-layer",
+  templateUrl: "./esri-feature-layer.component.html",
+  styleUrls: ["./esri-feature-layer.component.css"]
 })
 export class EsriFeatureLayerComponent implements OnInit {
   @Input()
-  public set features(features: __esri.Graphic[]) {
-
+  public set points(points: __esri.Point[]) {
+    this._points.next(points);
   }
 
-  constructor() { }
+  private _points: BehaviorSubject<
+    __esri.Point[] | undefined
+  > = new BehaviorSubject<__esri.Point | undefined>(undefined);
 
-  ngOnInit() {
-  }
+  constructor() {}
 
+  ngOnInit() {}
 }

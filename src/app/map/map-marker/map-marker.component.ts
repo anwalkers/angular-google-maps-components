@@ -78,7 +78,7 @@ export class MapMarkerComponent implements OnInit {
   > = new BehaviorSubject<
     google.maps.LatLng | google.maps.LatLngLiteral | undefined
   >(undefined);
-  private _title: BehaviorSubject<string | undefined> = new BehaviorSubject(
+  private _title: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(
     undefined
   );
 
