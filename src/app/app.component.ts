@@ -37,7 +37,7 @@ export class AppComponent implements OnInit, OnDestroy {
     libraries: "places"
   };
 
-  public graphics: __esri.Graphic[];
+  public graphics: BehaviorSubject<__esri.Graphic[] | undefined> = new BehaviorSubject<__esri.Graphic[] | undefined>(undefined);
 
   constructor(
     @Inject("MapService") private _mapService: MapService,
@@ -52,16 +52,20 @@ export class AppComponent implements OnInit, OnDestroy {
       center: { lat: 47.674293, lng: -117.095853 },
       zoom: 13
     };
+
+    this.graphics.subscribe((graphics) => {
+      console.log(`ESRI graphics: ${JSON.stringify(graphics)}`)
+    })
   }
 
   ngOnDestroy() {}
 
   public loadData(event) {
-    console.log(
-      `app component: load marker data: ${event} and ${JSON.stringify(
-        this.markerOptionsCollection
-      )}`
-    );
+    // console.log(
+    //   `app component: load marker data: ${event} and ${JSON.stringify(
+    //     this.markerOptionsCollection
+    //   )}`
+    // );
 
     this.markerOptionsCollection = [
       ...this.markerOptionsCollection,
@@ -92,7 +96,7 @@ export class AppComponent implements OnInit, OnDestroy {
           color: [226, 10, 10]
         };
 
-        this.graphics = [
+        this.graphics.next([
           new graphic({
             geometry: {
               type: "point", // autocasts as new Point()
@@ -109,7 +113,7 @@ export class AppComponent implements OnInit, OnDestroy {
             },
             symbol: simpleMarker
           })
-        ];
+        ]);
       });
     });
 
@@ -134,8 +138,8 @@ export class AppComponent implements OnInit, OnDestroy {
           color: [226, 10, 10]
         };
 
-        this.graphics = [
-          ...this.graphics,
+        this.graphics.next([
+          ...this.graphics.value,
           new graphic({
             geometry: {
               type: "point", // autocasts as new Point()
@@ -144,7 +148,7 @@ export class AppComponent implements OnInit, OnDestroy {
             },
             symbol: simpleMarker
           })
-        ];
+        ]);
       });
     });
   }
