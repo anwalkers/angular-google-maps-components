@@ -23,16 +23,14 @@ export class EsriFeatureLayerComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // this._graphics.subscribe(graphics => {
-    //   if (graphics !== undefined) {
-    //     this._ngZone.runOutsideAngular(() => {
-    //       graphics.map((graphic) => {
-    //         let res = this._esriMapComponent.view !== undefined ?
-    //         this._esriMapComponent.view.graphics.add(graphic) : true;
-    //     console.log(`ESRI response: ${JSON.stringify(res)}`);
-    //       });
-    //     });
-    //   }
-    // });
+    this._graphics.subscribe(graphics => {
+      if (graphics !== undefined) {
+        this._ngZone.runOutsideAngular(() => {
+          graphics.map(graphic => {
+            this._esriMapComponent.view.graphics.add(graphic);
+          });
+        });
+      }
+    });
   }
 }

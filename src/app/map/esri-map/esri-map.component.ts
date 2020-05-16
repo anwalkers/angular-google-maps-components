@@ -11,7 +11,7 @@ export const DEFAULT_MAP_PROPERTIES: __esri.MapProperties = {
 };
 export const DEFAULT_MAPVIEW_PROPERTIES: __esri.MapViewProperties = {
   center: [-117.095853, 47.674293],
-  zoom: 14
+  zoom: 13
 };
 export const DEFAULT_HEIGHT: string | number = "300px";
 export const DEFAULT_WIDTH: string | number = "100%";

@@ -50,7 +50,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.mapOptions = {
       center: { lat: 47.674293, lng: -117.095853 },
-      zoom: 14
+      zoom: 13
     };
   }
 
@@ -89,7 +89,7 @@ export class AppComponent implements OnInit, OnDestroy {
       loadModules(["esri/Graphic"]).then(([graphic]) => {
         const simpleMarker = {
           type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
-          color: [226, 119, 40]
+          color: [226, 10, 10]
         };
 
         this.graphics = [
@@ -126,6 +126,27 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       }
     ];
+
+    this._ngZone.runOutsideAngular(() => {
+      loadModules(["esri/Graphic"]).then(([graphic]) => {
+        const simpleMarker = {
+          type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
+          color: [226, 10, 10]
+        };
+
+        this.graphics = [
+          ...this.graphics,
+          new graphic({
+            geometry: {
+              type: "point", // autocasts as new Point()
+              longitude: -117.1,
+              latitude: 47.68
+            },
+            symbol: simpleMarker
+          })
+        ];
+      });
+    });
   }
 
   public markerClicked(markerComponent: MapMarkerComponent) {
