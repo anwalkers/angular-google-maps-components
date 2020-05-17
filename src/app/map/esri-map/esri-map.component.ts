@@ -2,7 +2,7 @@
 
 import { loadModules } from "esri-loader";
 
-import { Component, OnInit, Input, Output, NgZone } from "@angular/core";
+import { Component, OnInit, Input, Output, NgZone, EventEmitter } from "@angular/core";
 
 import { BehaviorSubject } from "rxjs";
 
@@ -51,6 +51,9 @@ export class EsriMapComponent implements OnInit {
     this._zoom.next(zoom);
   }
 
+  @Output()
+  public mapReady = new EventEmitter<boolean>(false);
+
   private _viewType: BehaviorSubject<string> = new BehaviorSubject<string>(
     "MapView"
   );
@@ -77,36 +80,37 @@ export class EsriMapComponent implements OnInit {
 
   ngOnInit() {
     this._ngZone.runOutsideAngular(() => {
-      loadModules([
-        "esri/Map",
-        `esri/views/${this._viewType.value}`
-      ]).then(response => {
-        let mapCtor: __esri.MapConstructor = response[0];
-        let mapView: __esri.ViewConstructor = response[1];
+      loadModules(["esri/Map", `esri/views/${this._viewType.value}`]).then(
+        response => {
+          let mapCtor: __esri.MapConstructor = response[0];
+          let mapView: __esri.ViewConstructor = response[1];
 
-        // create map
-        const map = new mapCtor(this._mapProperties.value);
+          // create map
+          const map = new mapCtor(this._mapProperties.value);
 
-        console.log(
-          "ESRI: HTMLDivElement: " + document.getElementById("esri-map")
-        );
-        const viewProps: __esri.MapViewProperties = {
-          container: "esri-map",
-          map: map
-        };
-        // prepare properties that should be set locally
-        // create a new object so as to not modify the provided object
-        const newViewProps: __esri.ViewProperties = {
-          ...this._mapViewProperties.value,
-          ...viewProps
-        };
+          console.log(
+            "ESRI: HTMLDivElement: " + document.getElementById("esri-map")
+          );
+          const viewProps: __esri.MapViewProperties = {
+            container: "esri-map",
+            map: map
+          };
+          // prepare properties that should be set locally
+          // create a new object so as to not modify the provided object
+          const newViewProps: __esri.ViewProperties = {
+            ...this._mapViewProperties.value,
+            ...viewProps
+          };
 
-        // create the MapView
-        const view = new mapView(newViewProps);
+          // create the MapView
+          const view = new mapView(newViewProps);
 
-        this.map = map;
-        this.view = view;
-      });
+          this.map = map;
+          this.view = view;
+
+          this.mapReady.emit(true);
+        }
+      );
     });
   }
 }

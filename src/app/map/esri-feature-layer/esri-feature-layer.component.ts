@@ -1,11 +1,20 @@
-import { Component, OnInit, Input, NgZone } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  Input,
+  NgZone,
+  ChangeDetectionStrategy,
+  ViewEncapsulation
+} from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 import { EsriMapComponent } from "../esri-map/esri-map.component";
 
 @Component({
   selector: "app-esri-feature-layer",
   templateUrl: "./esri-feature-layer.component.html",
-  styleUrls: ["./esri-feature-layer.component.css"]
+  styleUrls: ["./esri-feature-layer.component.css"],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
 export class EsriFeatureLayerComponent implements OnInit {
   @Input()

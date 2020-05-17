@@ -37,7 +37,9 @@ export class AppComponent implements OnInit, OnDestroy {
     libraries: "places"
   };
 
-  public graphics: BehaviorSubject<__esri.Graphic[] | undefined> = new BehaviorSubject<__esri.Graphic[] | undefined>(undefined);
+  public graphics: BehaviorSubject<
+    __esri.Graphic[] | undefined
+  > = new BehaviorSubject<__esri.Graphic[] | undefined>(undefined);
 
   constructor(
     @Inject("MapService") private _mapService: MapService,
@@ -52,21 +54,12 @@ export class AppComponent implements OnInit, OnDestroy {
       center: { lat: 47.674293, lng: -117.095853 },
       zoom: 13
     };
-
-    this.graphics.subscribe((graphics) => {
-      console.log(`ESRI graphics: ${JSON.stringify(graphics)}`)
-    })
   }
 
   ngOnDestroy() {}
 
-  public loadData(event) {
-    // console.log(
-    //   `app component: load marker data: ${event} and ${JSON.stringify(
-    //     this.markerOptionsCollection
-    //   )}`
-    // );
-
+  public loadGoogleData(event) {
+    console.log("GOOGLE map data");
     this.markerOptionsCollection = [
       ...this.markerOptionsCollection,
       {
@@ -89,32 +82,60 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     ];
 
-    this._ngZone.runOutsideAngular(() => {
-      loadModules(["esri/Graphic"]).then(([graphic]) => {
-        const simpleMarker = {
-          type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
-          color: [226, 10, 10]
-        };
+    this.changeDetectorRef.detectChanges();
+  }
 
-        this.graphics.next([
-          new graphic({
-            geometry: {
-              type: "point", // autocasts as new Point()
-              longitude: -117.095853,
-              latitude: 47.674293
-            },
-            symbol: simpleMarker
-          }),
-          new graphic({
-            geometry: {
-              type: "point", // autocasts as new Point()
-              longitude: -117.098,
-              latitude: 47.665
-            },
-            symbol: simpleMarker
-          })
-        ]);
-      });
+  public loadEsriData(event) {
+    console.log("ESRI map data");
+    loadModules(["esri/Graphic"]).then(([graphic]) => {
+      const simpleMarker = {
+        type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
+        color: [226, 10, 10]
+      };
+
+      const popupTemplate = {
+        // autocasts as new PopupTemplate()
+        title: "{title}",
+        content: [
+          {
+            type: "fields",
+            fieldInfos: [
+              {
+                fieldName: "description"
+              }
+            ]
+          }
+        ]
+      };
+
+      this.graphics.next([
+        new graphic({
+          geometry: {
+            type: "point", // autocasts as new Point()
+            longitude: -117.095853,
+            latitude: 47.674293
+          },
+          symbol: simpleMarker,
+          attributes: {
+            title: "A pin",
+            description: "A pin description"
+          },
+          popupTemplate: popupTemplate
+        }),
+        new graphic({
+          geometry: {
+            type: "point", // autocasts as new Point()
+            longitude: -117.098,
+            latitude: 47.665
+          },
+          symbol: simpleMarker,
+          attributes: {
+            title: "B pin",
+            description: "B pin description"
+          },
+          popupTemplate: popupTemplate
+        })
+      ]);
     });
 
     this.changeDetectorRef.detectChanges();
@@ -146,7 +167,8 @@ export class AppComponent implements OnInit, OnDestroy {
               longitude: -117.1,
               latitude: 47.68
             },
-            symbol: simpleMarker
+            symbol: simpleMarker,
+            attributes: {}
           })
         ]);
       });
