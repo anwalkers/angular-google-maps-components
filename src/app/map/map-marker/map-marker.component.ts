@@ -92,17 +92,12 @@ export class MapMarkerComponent implements OnInit {
     private readonly _mapComponent: MapComponent,
     private _ngZone: NgZone
   ) {
-    console.log(
-      `map marker: map is defined ${this._mapComponent.map !== null}`
-    );
   }
 
   public ngOnInit() {
     this._options.subscribe(options => {
       this.combineOptions().subscribe(options => {
         this._ngZone.runOutsideAngular(() => {
-          console.log(`map marker: adding marker: ${options}`);
-
           this.marker = new google.maps.Marker(options);
           this._eventManagerService.setEventListenerTarget(this.marker);
         });

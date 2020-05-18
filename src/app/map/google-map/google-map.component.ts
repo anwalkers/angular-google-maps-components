@@ -71,14 +71,10 @@ export class MapComponent implements OnInit {
     @Inject("MapService") private _mapService: MapService,
     private _ngZone: NgZone
   ) {
-    console.log(
-      `map component: map is defined ${this.map !== undefined}`
-    );
   }
 
   ngOnInit() {
     this._mapService.googleMapsLoaded.subscribe(loaded => {
-      console.log(`map component: google maps api loaded: ${loaded}`);
       if (loaded) {
         this._mapOptions.subscribe(mapOptions => {
           this._ngZone.runOutsideAngular(() => {
@@ -86,7 +82,6 @@ export class MapComponent implements OnInit {
               document.getElementById("map"),
               mapOptions
             );
-            console.log(`map component: map created`);
             this.mapReady.emit(true);
           });
         });

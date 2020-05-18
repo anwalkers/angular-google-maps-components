@@ -53,7 +53,6 @@ export class MapInfoWindowComponent implements OnInit, OnDestroy {
   public ngOnInit() {
     this._mapService.googleMapsLoaded.subscribe(loaded => {
       if (loaded) {
-        console.log(`map info window created`);
         const combineOptions$ = this._combineOptions();
 
         combineOptions$.pipe(take(1)).subscribe(options => {

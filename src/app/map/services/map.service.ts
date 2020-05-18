@@ -13,7 +13,6 @@ export class MapService {
     let keyStr: string;
     if (this._mapConfig.clientId) {
       keyStr = `&client=${this._mapConfig.clientId}`;
-      console.log("Using ClientId");
     } else {
       keyStr = this._mapConfig.key ? `&key=${this._mapConfig.key}` : '';
     }
@@ -45,7 +44,6 @@ export class MapService {
       this._windowRef.getNativeWindow().google &&
       this._windowRef.getNativeWindow().google.maps
     ) {
-      console.log("google maps api already loaded");
       this.googleMapsLoaded.next(true);
     }
 
@@ -59,7 +57,6 @@ export class MapService {
     script.src = `https://maps.googleapis.com/maps/api/js?callback=googleMapLoaded${this.key}${this.libraries}`;
 
     (this._windowRef.getNativeWindow() as any)["googleMapLoaded"] = () => {
-      console.log("google maps api finished loading");
       this.googleMapsLoaded.next(true);
     };
 

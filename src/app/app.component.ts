@@ -59,7 +59,6 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnDestroy() {}
 
   public loadGoogleData(event) {
-    console.log("GOOGLE map data");
     this.markerOptionsCollection = [
       ...this.markerOptionsCollection,
       {
@@ -86,7 +85,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public loadEsriData(event) {
-    console.log("ESRI map data");
     loadModules(["esri/Graphic"]).then(([graphic]) => {
       const simpleMarker = {
         type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
@@ -180,5 +178,9 @@ export class AppComponent implements OnInit, OnDestroy {
       content: `<div>this is content! ${markerComponent.getTitle()}</div>`
     };
     this.infoWindow.open(markerComponent);
+  }
+
+  public esriClicked(event) {
+    console.log(event);
   }
 }

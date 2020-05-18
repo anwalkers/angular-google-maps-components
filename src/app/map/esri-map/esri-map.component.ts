@@ -95,9 +95,6 @@ export class EsriMapComponent implements OnInit {
           // create map
           const map = new mapCtor(this._mapProperties.value);
 
-          console.log(
-            "ESRI: HTMLDivElement: " + document.getElementById("esri-map")
-          );
           const viewProps: __esri.MapViewProperties = {
             container: "esri-map",
             map: map

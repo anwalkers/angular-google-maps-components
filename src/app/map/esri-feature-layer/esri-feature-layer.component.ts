@@ -2,9 +2,11 @@ import {
   Component,
   OnInit,
   Input,
+  Output,
   NgZone,
   ChangeDetectionStrategy,
-  ViewEncapsulation
+  ViewEncapsulation,
+  EventEmitter
 } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 import { EsriMapComponent } from "../esri-map/esri-map.component";
@@ -22,6 +24,9 @@ export class EsriFeatureLayerComponent implements OnInit {
     this._graphics.next(graphics);
   }
 
+  @Output()
+  public featureLayerClicked: EventEmitter<any> = new EventEmitter<any>();
+
   private _graphics: BehaviorSubject<
     __esri.Graphic[] | undefined
   > = new BehaviorSubject<__esri.Graphic[] | undefined>(undefined);
@@ -32,6 +37,11 @@ export class EsriFeatureLayerComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this._esriMapComponent.mapReady.subscribe(ready => {
+      this._esriMapComponent.view.on("click", event => {
+        this.featureLayerClicked.emit(event);
+      });
+    });
     this._graphics.subscribe(graphics => {
       if (graphics !== undefined) {
         this._ngZone.runOutsideAngular(() => {

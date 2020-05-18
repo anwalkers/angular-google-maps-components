@@ -8,7 +8,7 @@
 </div>
 <div style="margin: 8px 0">
 	<app-esri-map (mapReady)="loadEsriData($event)">
-		<app-esri-feature-layer [graphics]="graphics | async"></app-esri-feature-layer>
+		<app-esri-feature-layer [graphics]="graphics | async" (featureLayerClicked)="esriClicked($event)"></app-esri-feature-layer>
 	</app-esri-map>
 </div>
 <div>

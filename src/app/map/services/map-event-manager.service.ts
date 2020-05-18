@@ -44,11 +44,8 @@ export class MapEventManagerService {
 
   public getTargetEvent<T>(event: string): Observable<T> {
     const observable = new Observable<T>(observer => {
-      console.log(`marker type: ${typeof this._target}`);
-
       // If the target hasn't been initialized yet, cache the observer so it can be added later.
       if (!this._target) {
-        console.log("event manager: target not set");
         this._pending.push({observable, observer});
         return undefined;
       }
