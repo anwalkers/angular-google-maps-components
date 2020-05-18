@@ -2,9 +2,16 @@
 
 import { loadModules } from "esri-loader";
 
-import { Component, OnInit, Input, Output, NgZone, EventEmitter } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  NgZone,
+  EventEmitter
+} from "@angular/core";
 
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, from } from "rxjs";
 
 export const DEFAULT_MAP_PROPERTIES: __esri.MapProperties = {
   basemap: "topo"
@@ -79,7 +86,7 @@ export class EsriMapComponent implements OnInit {
   constructor(private _ngZone: NgZone) {}
 
   ngOnInit() {
-    this._ngZone.runOutsideAngular(() => {
+    from(
       loadModules(["esri/Map", `esri/views/${this._viewType.value}`]).then(
         response => {
           let mapCtor: __esri.MapConstructor = response[0];
@@ -108,9 +115,11 @@ export class EsriMapComponent implements OnInit {
           this.map = map;
           this.view = view;
 
-          this.mapReady.emit(true);
+          return map;
         }
-      );
+      )
+    ).subscribe(() => {
+      this.mapReady.emit(true);
     });
   }
 }
