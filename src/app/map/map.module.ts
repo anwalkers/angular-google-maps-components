@@ -5,7 +5,6 @@ import { MapService } from "./services/map.service";
 import { MapMarkerComponent } from "./map-marker/map-marker.component";
 import { MapInfoWindowComponent } from "./map-info-window/map-info-window.component";
 import { MapEventManagerService } from "./services/map-event-manager.service";
-import { EsriMapService } from "./services/esri-map.service";
 import { EsriMapComponent } from "./esri-map/esri-map.component";
 import { EsriFeatureLayerComponent } from "./esri-feature-layer/esri-feature-layer.component";
 
@@ -22,8 +21,7 @@ const components = [
   exports: components,
   declarations: components,
   providers: [
-    { provide: "MapService", useClass: MapService },
-    { provide: "EsriMapService", useClass: EsriMapService }
+    { provide: "MapService", useClass: MapService }
   ],
   entryComponents: [MapComponent]
 })
