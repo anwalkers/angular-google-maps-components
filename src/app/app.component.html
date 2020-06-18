@@ -3,7 +3,7 @@
 		<app-map-marker #marker *ngFor="let markerOptions of markerOptionsCollection" [markerOptions]="markerOptions"
 			(markerClick)="markerClicked(marker)">
 		</app-map-marker>
-		<!-- <app-map-info-window [options]="infoWindowOptions"></app-map-info-window> -->
+		<app-map-info-window [options]="infoWindowOptions"></app-map-info-window>
 	</app-map>
 </div>
 <div style="margin: 8px 0">

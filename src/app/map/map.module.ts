@@ -12,7 +12,7 @@ import { EsriGraphicComponent } from "./esri-graphic/esri-graphic.component";
 const components = [
   MapComponent,
   MapMarkerComponent,
-  // MapInfoWindowComponent,
+  MapInfoWindowComponent,
   EsriMapComponent,
   EsriFeatureLayerComponent,
   EsriGraphicComponent
