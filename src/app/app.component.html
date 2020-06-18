@@ -3,12 +3,14 @@
 		<app-map-marker #marker *ngFor="let markerOptions of markerOptionsCollection" [markerOptions]="markerOptions"
 			(markerClick)="markerClicked(marker)">
 		</app-map-marker>
-		<app-map-info-window [options]="infoWindowOptions"></app-map-info-window>
+		<!-- <app-map-info-window [options]="infoWindowOptions"></app-map-info-window> -->
 	</app-map>
 </div>
 <div style="margin: 8px 0">
 	<app-esri-map (mapReady)="loadEsriData($event)">
-		<app-esri-feature-layer [graphics]="graphics | async" (featureLayerClicked)="esriClicked($event)"></app-esri-feature-layer>
+		<app-esri-feature-layer (featureLayerClicked)="esriClicked($event)">
+      <app-esri-graphic *ngFor="let graphic of graphics | async" [graphic]="graphic"></app-esri-graphic>
+    </app-esri-feature-layer>
 	</app-esri-map>
 </div>
 <div>
