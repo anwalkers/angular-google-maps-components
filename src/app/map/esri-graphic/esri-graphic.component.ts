@@ -13,7 +13,7 @@ import { EsriMapComponent } from "../esri-map/esri-map.component";
 
 @Component({
   selector: "app-esri-graphic",
-  templateUrl: "./esri-graphic.component.html",
+  template: "<ng-content></ng-content>",
   styleUrls: ["./esri-graphic.component.css"],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
